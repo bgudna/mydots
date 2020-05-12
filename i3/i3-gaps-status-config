@@ -9,7 +9,7 @@
 general {
 	output_format = "i3bar"
         colors = true
-        interval = 10
+        interval = 2
 	color_good = '#ededed'
 	color_degraded = '#ccdc90'
 	color_bad = '#e89393'
@@ -29,10 +29,10 @@ order += "battery 0"
 order += "tztime local"
 
 wireless _first_ {
-        format_up = " %quality"
+        format_up = "  %quality "
 	#%essid %ip
 	format_down = ""
-        color_bad = "#777777"
+        color_bad = "#900000"
 }
 
 ipv6 {
@@ -47,7 +47,7 @@ ethernet _first_ {
 }
 
 volume master {
-        format = " %volume"
+        format = "  %volume "
         format_muted = " (%volume)"
         device = "default"
         mixer = "Master"
@@ -55,7 +55,7 @@ volume master {
 }     
 
 battery 0 {
-    format = "%status %percentage"
+    format = " %status %percentage "
 	#%remaining
     format_down = ""
     last_full_capacity = true
@@ -96,23 +96,24 @@ run_watch VPN {
 }
 
 tztime local {
-       #format = " %h %d |  %I:%M"
-	format = " %A %e.%B |   %H:%M:%S"
+	#format = "   %I:%M"
+	#format = " %A %e.%B |   %H:%M:%S"
+	format = "    %H:%M:%S"
 }
 
 
 cpu_temperature 0 {
-	format = " %degrees°C"
+	format = "  %degrees°C "
 }
 
 load {
-        format = " %1min"
+        format = "  %1min "
 }
 
 disk "/" {
-        format = " %avail"
+        format = "  %avail "
 }
 
 cpu_usage {
-	format = " %usage"
+	format = "  %usage "
 }
