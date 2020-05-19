@@ -1,0 +1,40 @@
+URxvt.scrollstyle: plain
+URxvt.font: xft:Monospace:regular:size=8
+URxvt.letterSpace: -1
+
+URxvt*internalBorder: 3
+
+*background: #efefef
+*foreground: #232323
+
+!black
+*color0: #666666
+*color8: #666666
+
+!red
+*color1: #bb5d5d
+*color9: #bb5d5d
+
+!green
+*color2: #99994c
+*color10: #99994c
+
+!yellow
+*color3: #eeee9e
+*color11: #eeee9e
+
+!blue
+*color4: #55aaaa
+*color12: #55aaaa
+
+!magenta
+*color5: #8888cc
+*color13: #8888cc
+
+!cyan
+*color6: #9eeeee
+*color14: #9eeeee
+
+!ekkihvitur
+*color7: #666666
+*color15: #666666
