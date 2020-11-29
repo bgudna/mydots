@@ -30,13 +30,8 @@ set background=dark
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
-" starta nerdtree alltaf
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists(“s:std_in”) | NERDTree | endif
-" binda f vid ad toggla nerdtree
-"nnoremap <Leader>f :NERDTree<Enter>
-
-map <C-f> :NERDTreeToggle<CR>
+"opna nerdtree
+map <C-h> :NERDTreeToggle<CR>
 
 "statuslinu options
 set laststatus=2
