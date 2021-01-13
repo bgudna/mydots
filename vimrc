@@ -9,19 +9,31 @@ set textwidth=80
 set mouse=a
 set noswapfile
 
+" use filetype phtml on .html files
+au BufRead,BufNewFile *.html set ft=phtml
 
 " vundle 
 filetype off
 set nocompatible
 set rtp+=~/.vim/bundle/Vundle.vim
+
 call vundle#begin()
-" vundle plugins
+
+" plugins section
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'morhetz/gruvbox'
 Plugin 'vim-airline/vim-airline'
+Plug 'pangloss/vim-javascript'                  " better js support
+Plug 'leafgarland/typescript-vim'               " ts support
+Plug 'maxmellon/vim-jsx-pretty'                 " jsx syntax support
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " more autocompletition
+Plug 'w0rp/ale'                                 " linting
+
+" old, testings - unused
 " Plugin 'godlygeek/tabular'
 " Plugin 'plasticboy/vim-markdown'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -30,7 +42,7 @@ set background=dark
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
-"opna nerdtree
+"open nerdtree
 map <C-h> :NERDTreeToggle<CR>
 
 "statuslinu options
