@@ -24,11 +24,11 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'morhetz/gruvbox'
 Plugin 'vim-airline/vim-airline'
-Plug 'pangloss/vim-javascript'                  " better js support
-Plug 'leafgarland/typescript-vim'               " ts support
-Plug 'maxmellon/vim-jsx-pretty'                 " jsx syntax support
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " more autocompletition
-Plug 'w0rp/ale'                                 " linting
+Plugin 'pangloss/vim-javascript'                  " better js support
+Plugin 'leafgarland/typescript-vim'               " ts support
+Plugin 'maxmellon/vim-jsx-pretty'                 " jsx syntax support
+Plugin 'neoclide/coc.nvim', {'branch': 'release'} " more autocompletition
+Plugin 'w0rp/ale'                                 " linting
 
 " old, testings - unused
 " Plugin 'godlygeek/tabular'
