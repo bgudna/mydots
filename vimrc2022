@@ -1,0 +1,25 @@
+set expandtab
+set tabstop=4
+"set laststatus=2
+set softtabstop=4
+set shiftwidth=4
+set rnu
+set autoindent
+set textwidth=80
+set mouse=a
+set noswapfile
+
+call plug#begin('~/.vim/plugged')
+Plug 'scrooloose/nerdtree'
+Plug 'morhetz/gruvbox'
+Plug 'vim-airline/vim-airline'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+call plug#end()
+
+colorscheme gruvbox
+set background=dark
+
+"open nerdtree
+map <C-h> :NERDTreeToggle<CR>
+
+
