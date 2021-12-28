@@ -9,6 +9,7 @@ set textwidth=80
 set mouse=a
 set noswapfile
 
+" get the vim-plug from here: https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'morhetz/gruvbox'
