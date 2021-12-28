@@ -18,6 +18,8 @@ call plug#end()
 
 colorscheme gruvbox
 set background=dark
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 "open nerdtree
 map <C-h> :NERDTreeToggle<CR>
