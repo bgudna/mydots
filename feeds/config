@@ -1,0 +1,3 @@
+# open browser for MacOS
+
+browser "open -a safari '%u'"
