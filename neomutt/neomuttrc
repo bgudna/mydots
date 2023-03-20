@@ -24,6 +24,9 @@ set menu_scroll
 set tilde
 unset markers
 
+auto_view text/html
+set mailcap_path = ~/.config/neomutt/mailcap
+
 # status bar, date format, finding stuff etc.
 set status_chars = " *%A"
 set status_format = "[ Folder: %f ] [%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]%>─%?p?( %p postponed )?"
