@@ -1,9 +1,15 @@
 #!/bin/sh
 
-fileName="$HOME/docs/note-$(date +%d-%m-%Y).md"
+fileName="/mnt/drive/code/bgudna.github.io/_posts/$(date +%Y-%m-%d)-noodles.md"
 
-if [ ! -f $fileName ]; then 
-    echo "# Notes for $(date +%d-%m-%Y)" > $fileName
+if [ ! -f $fileName ]; then
+
+    echo "---" >> $fileName
+    echo "layout: post" >> $fileName
+    echo "title: Random ramblings at $(date +%d-%m-%Y)" >> $fileName
+    echo "permalink: /$RANDOM/" >> $fileName
+    echo "---" >> $fileName
+    echo "# Notes for this day" >> $fileName
 fi
 
 vim -c "norm Go" \
