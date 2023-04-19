@@ -1,0 +1,8 @@
+#!/bin/bash
+# this uses the imagemagick and the perlin script from here: http://www.fmwconcepts.com/imagemagick/perlin/index.php
+
+echo 'generating background!'
+perlin 1366x768 -r $(shuf -i 1-300 -n 1) $HOME/pics/back.jpg
+echo 'converting!'
+convert $HOME/pics/back.jpg -negate $HOME/pics/outback.jpg
+echo 'done, bye!'
