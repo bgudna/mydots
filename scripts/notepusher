@@ -1,0 +1,15 @@
+#!/bin/sh
+
+cd $HOME/code/bgudna.github.io/_posts/
+echo 'pulling...'
+git pull
+echo 'adding...'
+git add .
+echo 'committing ...'
+git commit -m "posting notes on $(date +%d-%m-%Y)"
+echo 'pushing!'
+git push
+
+echo 'Done!'
+cd $HOME
+
