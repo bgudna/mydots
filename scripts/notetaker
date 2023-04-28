@@ -1,6 +1,6 @@
 #!/bin/sh
 
-fileName="/mnt/drive/code/bgudna.github.io/_posts/$(date +%Y-%m-%d)-noodles.md"
+fileName="$HOME/code/bgudna.github.io/_posts/$(date +%Y-%m-%d)-noodles.md"
 
 if [ ! -f $fileName ]; then
 
