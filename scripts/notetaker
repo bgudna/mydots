@@ -9,11 +9,11 @@ if [ ! -f $fileName ]; then
     echo "title: Random ramblings at $(date +%d-%m-%Y)" >> $fileName
     echo "permalink: /$RANDOM/" >> $fileName
     echo "---" >> $fileName
-    echo "# Notes for this day" >> $fileName
+    echo "## Notes for this day" >> $fileName
 fi
 
 vim -c "norm Go" \
- -c "norm Go## $(date +%H:%M)" \
+ -c "norm Go### $(date +%H:%M)" \
  -c "norm G2o" \
  -c "norm zz" \
  -c "startinsert" $fileName
