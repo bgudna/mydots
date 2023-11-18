@@ -21,7 +21,7 @@ colorscheme gruvbox
 set background=dark
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-left g:netrw_browserex_viewer= "qutebrowser exec"
+let g:netrw_browserex_viewer= "firefox exec"
 
 
 "open nerdtree

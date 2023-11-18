@@ -1,6 +1,7 @@
 # open a browser in i3 setup
-browser "qutebrowser %u"
-
+# browser "qutebrowser %u"
+# open a urls in firefox
+browser "firefox %u"
 # open a browser on MacOS
 # browser "open -a safari '%u'"
 
