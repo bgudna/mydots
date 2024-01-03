@@ -1,0 +1,12 @@
+[window]
+opacity = 0.8
+padding.x = 10
+padding.y = 10
+decorations = "none"
+
+[font]
+normal.family = "JetBrains Mono"
+bold.family = "JetBrains Mono"
+italic.family = "JetBrains Mono"
+bold_italic.family = "JetBrains Mono"
+size = 9.0
