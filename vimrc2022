@@ -26,5 +26,6 @@ let g:netrw_browserex_viewer= "firefox exec"
 
 "open nerdtree
 map <C-h> :NERDTreeToggle<CR>
-
+"search visual selection with // and then press 'n' for next result
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
