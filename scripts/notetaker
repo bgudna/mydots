@@ -6,7 +6,7 @@ if [ ! -f $fileName ]; then
 
     echo "---" >> $fileName
     echo "layout: post" >> $fileName
-    echo "title: Random ramblings at $(date +%d-%m-%Y)" >> $fileName
+    echo "title: Random ramblings | $(date +%d-%m-%Y)" >> $fileName
     echo "permalink: /$RANDOM/" >> $fileName
     echo "---" >> $fileName
     echo "## Notes for this day" >> $fileName
