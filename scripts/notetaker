@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 fileName="$HOME/code/bgudna.github.io/_posts/$(date +%Y-%m-%d)-noodles.md"
 
