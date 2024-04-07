@@ -1,7 +1,9 @@
 # open a browser in i3 setup
 # browser "qutebrowser %u"
+# open qutebrowser in when installed with flatpak (like in Pop_OS!)
+browser "flatpak run org.qutebrowser.qutebrowser %u"
 # open a urls in firefox
-browser "firefox %u"
+# browser "firefox %u"
 # open a browser on MacOS
 # browser "open -a safari '%u'"
 
