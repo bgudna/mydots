@@ -17,6 +17,8 @@ Plug 'vim-airline/vim-airline'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
+set rtp+=/usr/local/opt/fzf
+
 colorscheme gruvbox
 set background=dark
 let g:airline#extensions#tabline#enabled = 1
