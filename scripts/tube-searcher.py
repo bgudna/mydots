@@ -1,11 +1,15 @@
 #!/usr/bin/python3
 '''
-tube - The Youtube Extractor
- - currently using this to get youtube URL's without opening the browser
+tube - The Youtube Audio Extractor
+The basis for this tool was made by datagubbe.se - I've modified it to fit my needs.
 ==============================
-Launch a video player with an (almost) arbitrary Youtube URL.
+Searches Youtube and then downloads an audio version of your selection. 
 Version 1.1.7
-Requires Python > 3.5
+Requires:  
+ * Python > 3.5
+ * yt-dlp
+ * ffmpeg
+
 Warning to sensitive readers: This software contains crude hacks
 and blatant bugs.
 
@@ -675,7 +679,7 @@ class YtSearchCli(YtStdIo):
   def cli(self):
     while True:
       self._cli_list()
-      self.out("Enter video number to view, "\
+      self.out("Enter video number to download audio, "\
         +"'l' to list results, empty input or 'q' to quit.")
       inp = input("tube search > ")
       if inp.lower() == "q" or inp == "":
