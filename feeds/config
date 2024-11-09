@@ -5,7 +5,9 @@
 # open a urls in firefox
 # browser "firefox %u"
 # open a browser on MacOS
-browser "open -a safari '%u'"
+# browser "open -a safari '%u'"
+# open firefox on MacOS
+browser "open -a firefox '%u'"
 
 auto-reload yes
 
