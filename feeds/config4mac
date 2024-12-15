@@ -1,9 +1,5 @@
-# open a browser in i3 setup
-# browser "qutebrowser %u"
-# open qutebrowser in when installed with flatpak (like in Pop_OS!)
-# browser "flatpak run org.qutebrowser.qutebrowser %u"
-# open urls in firefox
-browser "firefox %u"
+# open firefox on MacOS - change this to Safari if you change your mind
+browser "open -a firefox '%u'"
 
 auto-reload yes
 
