@@ -15,3 +15,15 @@ bold.family = "JetBrains Mono"
 italic.family = "JetBrains Mono"
 bold_italic.family = "JetBrains Mono"
 size = 11.0
+
+[env]
+TERM = "xterm-256color"
+
+[general]
+import = [
+  # uncomment the flavour you want below:
+  # "~/.config/alacritty/catppuccin-latte.toml"
+  # "~/.config/alacritty/catppuccin-frappe.toml"
+  # "~/.config/alacritty/catppuccin-macchiato.toml"
+  "~/.config/alacritty/catppuccin-mocha.toml"
+]
