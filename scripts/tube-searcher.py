@@ -679,8 +679,13 @@ class YtSearchCli(YtStdIo):
   def cli(self):
     while True:
       self._cli_list()
-      self.out("Enter video number to download audio, "\
+      if globals().get("video", True):
+        self.out("Enter number to play video, "\
         +"'l' to list results, empty input or 'q' to quit.")
+      else:
+        self.out("Enter video number to download audio, "\
+        +"'l' to list results, empty input or 'q' to quit.")
+      
       inp = input("tube search > ")
       if inp.lower() == "q" or inp == "":
         exit(0)
