@@ -696,13 +696,7 @@ class YtSearchCli(YtStdIo):
         vid, _, _ = self.hits[idx]
         url = "https://www.youtube.com/watch?v=%s" % vid
         # self.watcher(url)
-        # subprocess.run(["yt-dlp", "-x", url])
-        if globals().get("video", True):
-            # If the global "video" variable is True, run a different subprocess
-            subprocess.run(["mpv", url])
-        else:
-            # Default behavior: download audio
-            subprocess.run(["yt-dlp", "-x", url])
+        subprocess.run(["yt-dlp", "-x", url])
 
 
 # Interfaces with the user: CLI args, search, settings management etc.
@@ -714,7 +708,6 @@ class YtUserInterface(YtStdIo):
       self.errdie(ex.msg)
     self.hist = YtHistory()
     self.extractor = YtExtractor(self.settings.prefs)
-
 
   # Launches the configured player as a subprocess.
   def launch_player(self, info, inurl):
@@ -740,13 +733,6 @@ class YtUserInterface(YtStdIo):
       subprocess.run(ply, shell=do_shell)
     except FileNotFoundError:
       raise YtError("Player binary '%s' not found" % ply[0])
-
-  def video(self, args):
-    if len(args) > 1:
-      # Assume second arg is video URL.
-      self.watch_video(args[1])
-    else:
-      self.errdie("Missing video URL")
 
   # Prints a nicely formatted history list.
   def list_history(self):
@@ -883,7 +869,6 @@ class YtUserInterface(YtStdIo):
   # Arg handler: Print short-form help.
   def _arg_help(self):
     helptext = "\n".join([l[4:] for l in '''
-    TODO: Rewrite this so it makes sense with the changes I've made.
     tube - the Youtube Extractor (c) 2023 Carl Svensson. This is free software
     with ABSOLUTELY NO WARRANTY. Use '{sn} docs | less' for more information.
 
@@ -910,12 +895,6 @@ class YtUserInterface(YtStdIo):
     ytfile = os.path.basename(__file__)
     self.out(helptext.format(sn=ytfile).strip())
 
-  # Arg handler: Play a video from a URL.
-  def _arg_video(self, args):
-    if len(args) > 1:
-      #self.watch_video(args[1])  # Assume second argument is the video URL.
-      globals().set("video", True)
-
   # Handle CLI args.
   def arg_handler(self):
     args = sys.argv[1:]
@@ -926,7 +905,7 @@ class YtUserInterface(YtStdIo):
       "--help": (self._arg_help, no_args),
       "help": (self._arg_help, no_args),
       "-h": (self._arg_help, no_args),
-      "video": (self._arg_video, takes_args),
+      "docs": (self._arg_docs, no_args),
       "makedot": (self._arg_dotfile, no_args),
       "hist": (self._arg_hist, takes_args),
       "search": (self._arg_search, takes_args),
