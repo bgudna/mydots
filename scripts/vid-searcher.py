@@ -9,6 +9,7 @@ Requires:
  * Python > 3.5
  * yt-dlp
  * ffmpeg
+ * mpv
 
 Warning to sensitive readers: This software contains crude hacks
 and blatant bugs.
@@ -679,9 +680,9 @@ class YtSearchCli(YtStdIo):
   def cli(self):
     while True:
       self._cli_list()
-      self.out("Enter video number to download audio, "\
+      self.out("Enter number to play video, "\
         +"'l' to list results, empty input or 'q' to quit.")
-      inp = input("tube search > ")
+      inp = input("vid search > ")
       if inp.lower() == "q" or inp == "":
         exit(0)
       if inp.lower() == "l":
@@ -871,7 +872,7 @@ class YtUserInterface(YtStdIo):
   # Arg handler: Print short-form help.
   def _arg_help(self):
     helptext = "\n".join([l[4:] for l in '''
-    tube - the Youtube Extractor (c) 2023 Carl Svensson. This is free software
+    vid - the Youtube Video Extractor (c) 2023 Carl Svensson. This is free software
     with ABSOLUTELY NO WARRANTY. Use '{sn} docs | less' for more information.
 
     == Parameters ==
