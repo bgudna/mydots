@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 '''
 tube - The Youtube Audio Extractor
-The basis for this tool was made by datagubbe.se - I've modified it to fit my needs.
+The basis for this tool was made by datagubbe.se - I've modified it to fit my
+needs (bgudna).
 ==============================
 Searches Youtube and then downloads an audio version of your selection. 
 Version 1.1.7
@@ -681,7 +682,7 @@ class YtSearchCli(YtStdIo):
       self._cli_list()
       self.out("Enter video number to download audio, "\
         +"'l' to list results, empty input or 'q' to quit.")
-      inp = input("tube search > ")
+      inp = input("grab this > ")
       if inp.lower() == "q" or inp == "":
         exit(0)
       if inp.lower() == "l":
