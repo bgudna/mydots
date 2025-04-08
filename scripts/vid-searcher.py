@@ -682,7 +682,7 @@ class YtSearchCli(YtStdIo):
       self._cli_list()
       self.out("Enter number to play video, "\
         +"'l' to list results, empty input or 'q' to quit.")
-      inp = input("vid search > ")
+      inp = input("watch vid > ")
       if inp.lower() == "q" or inp == "":
         exit(0)
       if inp.lower() == "l":
