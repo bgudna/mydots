@@ -3,8 +3,9 @@
 # open qutebrowser in when installed with flatpak (like in Pop_OS!)
 # browser "flatpak run org.qutebrowser.qutebrowser %u"
 # open urls in firefox
-browser "firefox %u"
-
+# browser "firefox %u"
+# new way to open in macos:
+browser "open -a firefox -g %u"
 auto-reload yes
 
 # unbind keys
