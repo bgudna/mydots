@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 '''
-tube - The Youtube Audio Extractor
-The basis for this tool was made by datagubbe.se - I've modified it to fit my
-needs (bgudna).
+vid-searcher - The Youtube Video Searcher 
+The basis for this tool was made by datagubbe.se - I've modified it to fit my needs.
 ==============================
 Searches Youtube and then downloads an audio version of your selection. 
 Version 1.1.7
@@ -10,6 +9,7 @@ Requires:
  * Python > 3.5
  * yt-dlp
  * ffmpeg
+ * mpv
 
 Warning to sensitive readers: This software contains crude hacks
 and blatant bugs.
@@ -680,9 +680,9 @@ class YtSearchCli(YtStdIo):
   def cli(self):
     while True:
       self._cli_list()
-      self.out("Enter video number to download audio, "\
+      self.out("Enter number to play video, "\
         +"'l' to list results, empty input or 'q' to quit.")
-      inp = input("grab this > ")
+      inp = input("watch vid > ")
       if inp.lower() == "q" or inp == "":
         exit(0)
       if inp.lower() == "l":
@@ -697,7 +697,9 @@ class YtSearchCli(YtStdIo):
         vid, _, _ = self.hits[idx]
         url = "https://www.youtube.com/watch?v=%s" % vid
         # self.watcher(url)
-        subprocess.run(["yt-dlp", "-x", url])
+        # pipe the url to mpv
+        self.out("Opening %s in mpv..." % url)
+        subprocess.run(["mpv", url])
 
 
 # Interfaces with the user: CLI args, search, settings management etc.
@@ -870,7 +872,7 @@ class YtUserInterface(YtStdIo):
   # Arg handler: Print short-form help.
   def _arg_help(self):
     helptext = "\n".join([l[4:] for l in '''
-    tube - the Youtube Extractor (c) 2023 Carl Svensson. This is free software
+    vid - the Youtube Video Extractor (c) 2023 Carl Svensson. This is free software
     with ABSOLUTELY NO WARRANTY. Use '{sn} docs | less' for more information.
 
     == Parameters ==
