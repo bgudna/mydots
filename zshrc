@@ -3,7 +3,9 @@ PROMPT+=" %(?:%{$fg_bold[green]%}@ :%{$fg_bold[red]%}➜ )"
 PROMPT+="%{$fg[cyan]%}%~%{$reset_color%} %(?:%{$fg_bold[green]%}➜ "
 export RACK_DIR=/Users/bgudna/code/other/Rack-SDK/
 export PATH=$PATH:/Users/bgudna/.local/bin/
-export invidious_instance="https://vid.puffyan.us" ytfz
+
+alias tube='python3 ~/code/mydots/scripts/tube-searcher.py'
+alias vid='python3 ~/code/mydots/scripts/vid-searcher.py'
 
 # Autoload zsh add-zsh-hook and vcs_info functions (-U autoload w/o substition,
 autoload -Uz add-zsh-hook vcs_info
