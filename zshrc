@@ -6,6 +6,7 @@ export PATH=$PATH:/Users/bgudna/.local/bin/
 
 alias tube='python3 ~/code/mydots/scripts/tube-searcher.py'
 alias vid='python3 ~/code/mydots/scripts/vid-searcher.py'
+alias zenzen='~/Applications/Zen.app/Contents/MacOS/zen'
 
 # Autoload zsh add-zsh-hook and vcs_info functions (-U autoload w/o substition,
 autoload -Uz add-zsh-hook vcs_info
@@ -25,3 +26,11 @@ zstyle ':vcs_info:*' stagedstr ' +'
 # Set the format of the Git information for vcs_info
 zstyle ':vcs_info:git:*' formats       '(%b%u%c)'
 zstyle ':vcs_info:git:*' actionformats '(%b|%a%u%c)'
+
+export GPG_TTY=$(tty)
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/dns/.lmstudio/bin"
+# End of LM Studio CLI section
+
+export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
