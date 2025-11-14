@@ -27,6 +27,7 @@ Requires external binaries: yt-dlp, mpv (unless -x used) and ffmpeg.
 
 import argparse
 import json
+import time
 import subprocess
 import sys
 from typing import List, Tuple
@@ -42,13 +43,27 @@ def run_search(query: str, limit: int) -> List[str]:
     """Run yt-dlp search returning raw JSON lines (each result one JSON object)."""
     search_term = f"ytsearch{limit}:{query}"
     cmd = ["yt-dlp", search_term, "--dump-json"]
+    spinner_seq = "|/-\\"
+    spin_idx = 0
+    print(f"  Searching ", end="", flush=True)
     try:
-        proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     except FileNotFoundError:
+        print()  # newline after spinner prefix
         raise YtWrapError("yt-dlp binary not found (install yt-dlp)")
+    # Spinner loop
+    while True:
+        ret = proc.poll()
+        if ret is not None:
+            break
+        print(spinner_seq[spin_idx % len(spinner_seq)], end="\r", flush=True)
+        spin_idx += 1
+        time.sleep(0.1)
+    stdout, stderr = proc.communicate()
+    print(" " * 40, end="\r")  # clear spinner line
     if proc.returncode != 0:
-        raise YtWrapError(f"yt-dlp search failed: {proc.stderr.strip() or 'unknown error'}")
-    lines = [l for l in proc.stdout.splitlines() if l.strip()]
+        raise YtWrapError(f"yt-dlp search failed: {stderr.strip() or 'unknown error'}")
+    lines = [l for l in stdout.splitlines() if l.strip()]
     return lines
 
 
