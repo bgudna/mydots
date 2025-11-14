@@ -28,6 +28,7 @@ Requires external binaries: yt-dlp, mpv (unless -x used) and ffmpeg.
 import argparse
 import json
 import time
+import threading
 import subprocess
 import sys
 from typing import List, Tuple
@@ -40,29 +41,40 @@ class YtWrapError(Exception):
 
 
 def run_search(query: str, limit: int) -> List[str]:
-    """Run yt-dlp search returning raw JSON lines (each result one JSON object)."""
+    """Run yt-dlp search returning raw JSON lines with spinner (non-blocking)."""
     search_term = f"ytsearch{limit}:{query}"
     cmd = ["yt-dlp", search_term, "--dump-json"]
+    result: dict = {}
+
+    def worker():
+        try:
+            proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        except FileNotFoundError:
+            result["error"] = "yt-dlp binary not found (install yt-dlp)"
+            return
+        result["returncode"] = proc.returncode
+        result["stdout"] = proc.stdout
+        result["stderr"] = proc.stderr
+
+    th = threading.Thread(target=worker)
+    th.start()
     spinner_seq = "|/-\\"
     spin_idx = 0
-    print(f"  Searching ", end="", flush=True)
-    try:
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    except FileNotFoundError:
-        print()  # newline after spinner prefix
-        raise YtWrapError("yt-dlp binary not found (install yt-dlp)")
-    # Spinner loop
-    while True:
-        ret = proc.poll()
-        if ret is not None:
-            break
+    # Hide the raw search term; just a generic spinner label.
+    start_msg = "  Searching "
+    print(start_msg, end="", flush=True)
+    while th.is_alive():
         print(spinner_seq[spin_idx % len(spinner_seq)], end="\r", flush=True)
         spin_idx += 1
         time.sleep(0.1)
-    stdout, stderr = proc.communicate()
-    print(" " * 40, end="\r")  # clear spinner line
-    if proc.returncode != 0:
-        raise YtWrapError(f"yt-dlp search failed: {stderr.strip() or 'unknown error'}")
+    th.join()
+    # Clear spinner line
+    print(" " * (len(start_msg) + 2), end="\r")
+    if "error" in result:
+        raise YtWrapError(result["error"])
+    if result.get("returncode", 1) != 0:
+        raise YtWrapError(f"yt-dlp search failed: {result.get('stderr','').strip() or 'unknown error'}")
+    stdout = result.get("stdout", "")
     lines = [l for l in stdout.splitlines() if l.strip()]
     return lines
 
