@@ -43,7 +43,7 @@ class YtWrapError(Exception):
 def run_search(query: str, limit: int) -> List[str]:
     """Run yt-dlp search returning raw JSON lines with spinner (non-blocking)."""
     search_term = f"ytsearch{limit}:{query}"
-    cmd = ["yt-dlp", search_term, "--dump-json"]
+    cmd = ["yt-dlp", search_term, "--dump-json", "--flat-playlist", "--skip-download", "--quiet", "--ignore-errors"]
     result: dict = {}
 
     def worker():
