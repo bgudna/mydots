@@ -79,8 +79,8 @@ def run_search(query: str, limit: int) -> List[str]:
     return lines
 
 
-def parse_results(lines: List[str]) -> List[Tuple[str, str]]:
-    """Parse each JSON line extracting (id, title)."""
+def parse_results(lines: List[str]) -> List[Tuple[str, str, str]]:
+    """Parse each JSON line extracting (id, title, channel)."""
     results = []
     for ln in lines:
         try:
@@ -89,27 +89,28 @@ def parse_results(lines: List[str]) -> List[Tuple[str, str]]:
             raise YtWrapError(f"JSON parse error: {ex}")
         vid_id = dat.get("id") or dat.get("webpage_url_basename")
         title = dat.get("title") or "(no title)"
+        channel = dat.get("channel") or dat.get("uploader") or "(unknown)"
         if not vid_id:
             # Skip entries lacking ID
             continue
         if len(title) > TRUNCATE_LEN:
             title = title[:TRUNCATE_LEN] + "..."
-        results.append((vid_id, title))
+        results.append((vid_id, title, channel))
     return results
 
 
-def display_results(results: List[Tuple[str, str]]):
-    """Print numbered list."""
+def display_results(results: List[Tuple[str, str, str]]):
+    """Print numbered list with channel name."""
     if not results:
         print("No results.")
         return
     pad = len(str(len(results)))
-    for idx, (vid_id, title) in enumerate(results, start=1):
-        print(f"{str(idx).rjust(pad)}) {title} [{vid_id}]")
+    for idx, (vid_id, title, channel) in enumerate(results, start=1):
+        print(f"{str(idx).rjust(pad)}) {channel}: {title} [{vid_id}]")
 
 
-def prompt_selection(results: List[Tuple[str, str]]) -> Tuple[str, str] | None:
-    """Prompt user for selection; return (id,title) or None if user quits with q."""
+def prompt_selection(results: List[Tuple[str, str, str]]) -> Tuple[str, str, str] | None:
+    """Prompt user for selection; return (id,title,channel) or None if user quits with q."""
     if not results:
         return None
     while True:
@@ -195,7 +196,7 @@ def main(argv: List[str]) -> int:
         if sel is None:
             print("Quit.")
             return 0
-        vid_id, title = sel
+        vid_id, title, channel = sel
         rc = play_or_extract(vid_id, title, args.x)
         if rc != 0:
             # If external tool failed, return its code immediately.

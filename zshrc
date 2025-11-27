@@ -1,12 +1,12 @@
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/Users/dns/.zsh/completions:"* ]]; then export FPATH="/Users/dns/.zsh/completions:$FPATH"; fi
 PROMPT="%{$fg_bold[white]%}%n"
 PROMPT+=" %(?:%{$fg_bold[green]%}@ :%{$fg_bold[red]%}➜ )"
 PROMPT+="%{$fg[cyan]%}%~%{$reset_color%} %(?:%{$fg_bold[green]%}➜ "
 export RACK_DIR=/Users/bgudna/code/other/Rack-SDK/
 export PATH=$PATH:/Users/bgudna/.local/bin/
 
-alias tube='python3 ~/code/mydots/scripts/tube-searcher.py'
-alias vid='python3 ~/code/mydots/scripts/vid-searcher.py'
-alias zenzen='~/Applications/Zen.app/Contents/MacOS/zen'
+alias tube='python3 ~/code/mydots/scripts/ytwrap.py'
 
 # Autoload zsh add-zsh-hook and vcs_info functions (-U autoload w/o substition,
 autoload -Uz add-zsh-hook vcs_info
@@ -34,3 +34,8 @@ export PATH="$PATH:/Users/dns/.lmstudio/bin"
 # End of LM Studio CLI section
 
 export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
+. "/Users/dns/.deno/env"
+# Initialize zsh completions (added by deno install script)
+autoload -Uz compinit
+compinit
