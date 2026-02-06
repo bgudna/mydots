@@ -31,7 +31,7 @@ import time
 import threading
 import subprocess
 import sys
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 MAX_SHOW = 50
 TRUNCATE_LEN = 72
@@ -109,7 +109,7 @@ def display_results(results: List[Tuple[str, str, str]]):
         print(f"{str(idx).rjust(pad)}) {channel}: {title} [{vid_id}]")
 
 
-def prompt_selection(results: List[Tuple[str, str, str]]) -> Tuple[str, str, str] | None:
+def prompt_selection(results: List[Tuple[str, str, str]]) -> Optional[Tuple[str, str, str]]:
     """Prompt user for selection; return (id,title,channel) or None if user quits with q."""
     if not results:
         return None
