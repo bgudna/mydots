@@ -13,6 +13,7 @@ set noswapfile
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'morhetz/gruvbox'
+Plug 'preservim/vim-pencil'
 Plug 'vim-airline/vim-airline'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'tidalcycles/vim-tidal'
