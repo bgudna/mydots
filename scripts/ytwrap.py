@@ -27,14 +27,15 @@ Requires external binaries: yt-dlp, mpv (unless -x used) and ffmpeg.
 
 import argparse
 import json
-import time
-import threading
 import subprocess
 import sys
-from typing import List, Tuple, Optional
+import threading
+import time
+from typing import List, Optional, Tuple
 
 MAX_SHOW = 50
 TRUNCATE_LEN = 72
+
 
 class YtWrapError(Exception):
     pass
@@ -43,12 +44,23 @@ class YtWrapError(Exception):
 def run_search(query: str, limit: int) -> List[str]:
     """Run yt-dlp search returning raw JSON lines with spinner (non-blocking)."""
     search_term = f"ytsearch{limit}:{query}"
-    cmd = ["yt-dlp", search_term, "--dump-json", "--flat-playlist", "--skip-download", "--quiet", "--ignore-errors"]
+    cmd = [
+        "yt-dlp",
+        search_term,
+        "--dump-json",
+        "--flat-playlist",
+        "--skip-download",
+        "--quiet",
+        "--no-check-certificate",
+        "--ignore-errors",
+    ]
     result: dict = {}
 
     def worker():
         try:
-            proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            proc = subprocess.run(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+            )
         except FileNotFoundError:
             result["error"] = "yt-dlp binary not found (install yt-dlp)"
             return
@@ -73,7 +85,9 @@ def run_search(query: str, limit: int) -> List[str]:
     if "error" in result:
         raise YtWrapError(result["error"])
     if result.get("returncode", 1) != 0:
-        raise YtWrapError(f"yt-dlp search failed: {result.get('stderr','').strip() or 'unknown error'}")
+        raise YtWrapError(
+            f"yt-dlp search failed: {result.get('stderr', '').strip() or 'unknown error'}"
+        )
     stdout = result.get("stdout", "")
     lines = [l for l in stdout.splitlines() if l.strip()]
     return lines
@@ -109,7 +123,9 @@ def display_results(results: List[Tuple[str, str, str]]):
         print(f"{str(idx).rjust(pad)}) {channel}: {title} [{vid_id}]")
 
 
-def prompt_selection(results: List[Tuple[str, str, str]]) -> Optional[Tuple[str, str, str]]:
+def prompt_selection(
+    results: List[Tuple[str, str, str]],
+) -> Optional[Tuple[str, str, str]]:
     """Prompt user for selection; return (id,title,channel) or None if user quits with q."""
     if not results:
         return None
@@ -137,7 +153,7 @@ def prompt_selection(results: List[Tuple[str, str, str]]) -> Optional[Tuple[str,
 def play_or_extract(video_id: str, title: str, extract_audio: bool) -> int:
     url = f"https://youtu.be/{video_id}"
     if extract_audio:
-        cmd = ["yt-dlp", "-x", url]
+        cmd = ["yt-dlp", "-x", "--no-check-certificate", url]
         desc = "audio extraction"
     else:
         cmd = ["mpv", url]
@@ -155,8 +171,16 @@ def play_or_extract(video_id: str, title: str, extract_audio: bool) -> int:
 def parse_args(argv: List[str]):
     ap = argparse.ArgumentParser(description="Wrapper around yt-dlp ytsearch")
     ap.add_argument("query", nargs=argparse.REMAINDER, help="Search query words")
-    ap.add_argument("-n", "--limit", type=int, default=10, help="Number of results (max 50, default 10)")
-    ap.add_argument("-x", action="store_true", help="Extract audio instead of playing in mpv")
+    ap.add_argument(
+        "-n",
+        "--limit",
+        type=int,
+        default=10,
+        help="Number of results (max 50, default 10)",
+    )
+    ap.add_argument(
+        "-x", action="store_true", help="Extract audio instead of playing in mpv"
+    )
     args = ap.parse_args(argv)
     if not args.query:
         ap.error("Provide a search query.")
