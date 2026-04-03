@@ -22,7 +22,7 @@ Exit codes:
   3  mpv or yt-dlp (for -x) missing
   4  JSON parse error
 
-Requires external binaries: yt-dlp, mpv (unless -x used) and ffmpeg.
+Requires external binaries: yt-dlp, mpv or vlc for playback (unless -x used) and ffmpeg.
 """
 
 import argparse
@@ -156,15 +156,26 @@ def play_or_extract(video_id: str, title: str, extract_audio: bool) -> int:
         cmd = ["yt-dlp", "-x", "--no-check-certificate", url]
         desc = "audio extraction"
     else:
-        cmd = ["mpv", url]
+        # Route through yt-dlp with certificate verification disabled
+        # Pipe yt-dlp output to mpv, fall back to vlc if not found
+        cmd = f"yt-dlp --no-check-certificate -o - '{url}' | mpv -"
         desc = "playback"
     print(f"Starting {desc} for {video_id}...")
     try:
-        proc = subprocess.run(cmd)
+        proc = subprocess.run(cmd, shell=True)
     except FileNotFoundError:
-        missing = "yt-dlp" if extract_audio else "mpv"
-        print(f"Required binary '{missing}' not found.")
-        return 3
+        if not extract_audio:
+            # Try vlc as fallback for playback
+            cmd = f"yt-dlp --no-check-certificate -o - '{url}' | vlc -"
+            try:
+                proc = subprocess.run(cmd, shell=True)
+            except FileNotFoundError:
+                print("Required binary 'yt-dlp' not found.")
+                return 3
+        else:
+            missing = "yt-dlp"
+            print(f"Required binary '{missing}' not found.")
+            return 3
     return proc.returncode
 
 
