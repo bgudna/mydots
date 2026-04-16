@@ -155,16 +155,22 @@ def play_or_extract(video_id: str, title: str, extract_audio: bool) -> int:
     if extract_audio:
         cmd = ["yt-dlp", "-x", "--no-check-certificate", url]
         desc = "audio extraction"
+        print(f"Starting {desc} for {video_id}...")
+        try:
+            proc = subprocess.run(cmd)
+        except FileNotFoundError:
+            print("Required binary 'yt-dlp' not found.")
+            return 3
+        return proc.returncode
     else:
         # Route through yt-dlp with certificate verification disabled
         # Pipe yt-dlp output to mpv, fall back to vlc if not found
         cmd = f"yt-dlp --no-check-certificate -o - '{url}' | mpv -"
         desc = "playback"
-    print(f"Starting {desc} for {video_id}...")
-    try:
-        proc = subprocess.run(cmd, shell=True)
-    except FileNotFoundError:
-        if not extract_audio:
+        print(f"Starting {desc} for {video_id}...")
+        try:
+            proc = subprocess.run(cmd, shell=True)
+        except FileNotFoundError:
             # Try vlc as fallback for playback
             cmd = f"yt-dlp --no-check-certificate -o - '{url}' | vlc -"
             try:
@@ -172,11 +178,7 @@ def play_or_extract(video_id: str, title: str, extract_audio: bool) -> int:
             except FileNotFoundError:
                 print("Required binary 'yt-dlp' not found.")
                 return 3
-        else:
-            missing = "yt-dlp"
-            print(f"Required binary '{missing}' not found.")
-            return 3
-    return proc.returncode
+        return proc.returncode
 
 
 def parse_args(argv: List[str]):
