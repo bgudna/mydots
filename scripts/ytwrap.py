@@ -113,35 +113,40 @@ def parse_results(lines: List[str]) -> List[Tuple[str, str, str]]:
     return results
 
 
-def display_results(results: List[Tuple[str, str, str]]):
-    """Print numbered list with channel name."""
+def display_results(results: List[Tuple[str, str, str]], show_more_option: bool = False):
+    """Print numbered list with channel name and optional 'more' option."""
     if not results:
         print("No results.")
         return
     pad = len(str(len(results)))
     for idx, (vid_id, title, channel) in enumerate(results, start=1):
         print(f"{str(idx).rjust(pad)}) {channel}: {title} [{vid_id}]")
+    if show_more_option:
+        print("m) More results...")
 
 
 def prompt_selection(
     results: List[Tuple[str, str, str]],
-) -> Optional[Tuple[str, str, str]]:
-    """Prompt user for selection; return (id,title,channel) or None if user quits with q."""
+    allow_more: bool = False
+) -> Optional[Tuple[str, str, str] or str]:
+    """Prompt user for selection; return (id,title,channel), 'more', or None if user quits with q."""
     if not results:
         return None
     while True:
         try:
-            inp = input("Select number (q=quit): ").strip()
+            inp = input("Select number (m=more, q=quit): " if allow_more else "Select number (q=quit): ").strip()
         except EOFError:
             # Treat EOF as quit
             return None
         if inp.lower() == "q":
             return None
+        if allow_more and inp.lower() == "m":
+            return "more"
         if inp == "":
             # Empty input: just prompt again
             continue
         if not inp.isdigit():
-            print(f"Invalid input '{inp}'. Enter a number or 'q'.")
+            print(f"Invalid input '{inp}'. Enter a number" + ("/m" if allow_more else "") + " or 'q'.")
             continue
         num = int(inp)
         if not (1 <= num <= len(results)):
@@ -227,12 +232,24 @@ def main(argv: List[str]) -> int:
         return 0
 
     # Persistent selection loop until user quits with 'q'.
+    limit = args.limit
     while True:
-        display_results(results)
-        sel = prompt_selection(results)
+        show_more = limit < MAX_SHOW
+        display_results(results, show_more_option=show_more)
+        sel = prompt_selection(results, allow_more=show_more)
         if sel is None:
             print("Quit.")
             return 0
+        if sel == "more":
+            # Fetch 10 more results, up to MAX_SHOW
+            limit = min(limit + 10, MAX_SHOW)
+            try:
+                lines = run_search(query, limit)
+                results = parse_results(lines)
+            except YtWrapError as ex:
+                print(f"Error: {ex}")
+                return 2
+            continue
         vid_id, title, channel = sel
         rc = play_or_extract(vid_id, title, args.x)
         if rc != 0:
