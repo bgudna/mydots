@@ -1,0 +1,38 @@
+set expandtab
+set tabstop=4
+"set laststatus=2
+set softtabstop=4
+set shiftwidth=4
+set rnu
+set autoindent
+set textwidth=80
+set mouse=a
+set noswapfile
+
+" get the vim-plug from here: https://github.com/junegunn/vim-plug
+call plug#begin('~/.vim/plugged')
+Plug 'scrooloose/nerdtree'
+Plug 'morhetz/gruvbox'
+Plug 'preservim/vim-pencil'
+Plug 'vim-airline/vim-airline'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'tidalcycles/vim-tidal'
+Plug 'junegunn/fzf.vim'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+call plug#end()
+
+"use FZF from homebrew
+set rtp+=/usr/local/opt/fzf
+
+colorscheme gruvbox
+set background=light
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:netrw_browserex_viewer= "firefox exec"
+
+
+"open nerdtree
+map <C-h> :NERDTreeToggle<CR>
+"search visual selection with // and then press 'n' for next result
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+set rtp+=/usr/local/opt/fzf 
