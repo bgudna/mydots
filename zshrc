@@ -37,7 +37,7 @@ export PATH="$PATH:/Users/dns/.lmstudio/bin"
 
 export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
-. "/Users/dns/.deno/env"
+#. "/Users/dns/.deno/env"
 # Initialize zsh completions (added by deno install script)
 autoload -Uz compinit
 compinit
