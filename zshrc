@@ -7,6 +7,8 @@ export RACK_DIR=/Users/bgudna/code/other/Rack-SDK/
 export PATH=$PATH:/Users/bgudna/.local/bin/
 
 alias tube='python3 ~/code/mydots/scripts/ytwrap.py'
+alias nt='~/code/mydots/scripts/notetaker'
+alias np='~/code/mydots/scripts/notepusher'
 
 # Autoload zsh add-zsh-hook and vcs_info functions (-U autoload w/o substition,
 autoload -Uz add-zsh-hook vcs_info
