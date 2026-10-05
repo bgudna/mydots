@@ -27,6 +27,7 @@ Requires external binaries: yt-dlp, mpv or vlc for playback (unless -x used) and
 
 import argparse
 import json
+import shlex
 import subprocess
 import sys
 import threading
@@ -155,6 +156,17 @@ def prompt_selection(
         return results[num - 1]
 
 
+def _command_not_found(stderr: str, command: str) -> bool:
+    stderr = stderr.lower()
+    command = command.lower()
+    return f"{command}: command not found" in stderr or f"{command} not found" in stderr
+
+
+def _run_player_pipeline(url: str, player_cmd: str) -> subprocess.CompletedProcess:
+    cmd = f"yt-dlp --no-check-certificate -o - {shlex.quote(url)} | {player_cmd} -"
+    return subprocess.run(cmd, shell=True, stderr=subprocess.PIPE, text=True)
+
+
 def play_or_extract(video_id: str, title: str, extract_audio: bool) -> int:
     url = f"https://youtu.be/{video_id}"
     if extract_audio:
@@ -168,21 +180,32 @@ def play_or_extract(video_id: str, title: str, extract_audio: bool) -> int:
             return 3
         return proc.returncode
     else:
-        # Route through yt-dlp with certificate verification disabled
-        # Pipe yt-dlp output to mpv, fall back to vlc if not found
-        cmd = f"yt-dlp --no-check-certificate -o - '{url}' | mpv -"
+        # Route through yt-dlp with certificate verification disabled.
+        # Pipe yt-dlp output to mpv, and fall back to vlc if mpv is missing.
         desc = "playback"
         print(f"Starting {desc} for {video_id}...")
         try:
-            proc = subprocess.run(cmd, shell=True)
+            proc = _run_player_pipeline(url, "mpv")
         except FileNotFoundError:
-            # Try vlc as fallback for playback
-            cmd = f"yt-dlp --no-check-certificate -o - '{url}' | vlc -"
-            try:
-                proc = subprocess.run(cmd, shell=True)
-            except FileNotFoundError:
-                print("Required binary 'yt-dlp' not found.")
+            print("Required binary 'yt-dlp' not found.")
+            return 3
+
+        if proc.returncode != 0 and _command_not_found(proc.stderr or "", "mpv"):
+            # Try VLC via a couple of common launch paths without relying on PATH detection.
+            vlc_candidates = ["vlc", "/Applications/VLC.app/Contents/MacOS/VLC"]
+            for vlc_cmd in vlc_candidates:
+                try:
+                    proc = _run_player_pipeline(url, vlc_cmd)
+                except FileNotFoundError:
+                    print("Required binary 'yt-dlp' not found.")
+                    return 3
+
+                if not _command_not_found(proc.stderr or "", vlc_cmd):
+                    break
+            else:
+                print("Required binary 'mpv' or 'vlc' not found.")
                 return 3
+
         return proc.returncode
 
 
