@@ -9,6 +9,7 @@ export PATH=$PATH:/Users/bgudna/.local/bin/
 alias tube='python3 ~/code/mydots/scripts/ytwrap.py'
 alias nt='~/code/mydots/scripts/notetaker'
 alias np='~/code/mydots/scripts/notepusher'
+alias con2free='~/code/mydots/scripts/copy2mp3.sh'
 
 # Autoload zsh add-zsh-hook and vcs_info functions (-U autoload w/o substition,
 autoload -Uz add-zsh-hook vcs_info
