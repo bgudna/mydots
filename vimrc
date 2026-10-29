@@ -22,7 +22,7 @@ Plug 'junegunn/fzf.vim'
 call plug#end()
 
 "use FZF from homebrew
-set rtp+=/usr/local/opt/fzf
+set rtp+=/opt/homebrew/opt/fzf
 
 colorscheme gruvbox
 set background=dark
