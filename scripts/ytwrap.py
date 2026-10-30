@@ -163,7 +163,8 @@ def _command_not_found(stderr: str, command: str) -> bool:
 
 
 def _run_player_pipeline(url: str, player_cmd: str) -> subprocess.CompletedProcess:
-    cmd = f"yt-dlp --no-check-certificate -o - {shlex.quote(url)} | {player_cmd} -"
+    # Single pre-muxed format so the piped stream is a playable container.
+    cmd = f"yt-dlp --no-check-certificate -f b -o - {shlex.quote(url)} | {player_cmd} -"
     return subprocess.run(cmd, shell=True, stderr=subprocess.PIPE, text=True)
 
 
@@ -184,13 +185,16 @@ def play_or_extract(video_id: str, title: str, extract_audio: bool) -> int:
         # Pipe yt-dlp output to mpv, and fall back to vlc if mpv is missing.
         desc = "playback"
         print(f"Starting {desc} for {video_id}...")
+        # mpv calls yt-dlp itself, which handles separate video/audio streams.
+        mpv_missing = False
         try:
-            proc = _run_player_pipeline(url, "mpv")
+            proc = subprocess.run(
+                ["mpv", "--ytdl-raw-options=no-check-certificate=", url]
+            )
         except FileNotFoundError:
-            print("Required binary 'yt-dlp' not found.")
-            return 3
+            mpv_missing = True
 
-        if proc.returncode != 0 and _command_not_found(proc.stderr or "", "mpv"):
+        if mpv_missing:
             # Try VLC via a couple of common launch paths without relying on PATH detection.
             vlc_candidates = ["vlc", "/Applications/VLC.app/Contents/MacOS/VLC"]
             for vlc_cmd in vlc_candidates:
